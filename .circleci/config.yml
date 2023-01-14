@@ -213,12 +213,13 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/
-      - install-nodejs
       - run:
           name: Install dependencies
           command: |
             apk add tar gzip
+            apt install curl
             pip3 install awscli
+      - install-nodejs
       - run:
           name: Run migrations
           command: |
