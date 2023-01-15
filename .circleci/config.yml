@@ -214,10 +214,6 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Install dependencies
-          command: |
-            pip3 install awscli
-      - run:
           name: Run migrations
           command: |
             cd backend
