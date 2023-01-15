@@ -208,7 +208,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: python:3.7-alpine3.11
+      circleci/node:13.8.0
     steps:
       - checkout
       - attach_workspace:
@@ -218,7 +218,6 @@ jobs:
           command: |
             apk add tar gzip curl
             pip3 install awscli
-      - install-nodejs
       - run:
           name: Run migrations
           command: |
@@ -276,7 +275,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/python:3.10
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - restore_cache:
