@@ -244,17 +244,17 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/base:stable
     steps:
       - checkout
       - restore_cache:
           keys: [ frontend-build ]
-     # - install-nodejs
+      - install-nodejs
+      - install_awscli
       - run:
           name: Install dependencies
           command: |
-            yum update -y
-            yum install -y tar gzip ansible
+            apt install tar gzip
       - run:
           name: Get backend url
           command: |
