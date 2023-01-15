@@ -44,7 +44,6 @@ commands:
       - run:
           name: Install Node.js 13.8.0
           command: |
-            apt-get install -y sudo 
             # Install Node.js LTS version as our base Node.js version
             curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
             sudo apt install -y nodejs
@@ -277,7 +276,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/python:3.10
     steps:
       - checkout
       - restore_cache:
