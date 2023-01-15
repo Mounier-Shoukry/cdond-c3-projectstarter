@@ -249,12 +249,11 @@ jobs:
       - checkout
       - restore_cache:
           keys: [ frontend-build ]
-      - install-nodejs
+   #   - install-nodejs
       - run:
           name: Install dependencies
           command: |
-            pip3 install awscli
-            apk add tar gzip ansible
+            yum install tar gzip ansible
       - run:
           name: Get backend url
           command: |
