@@ -253,7 +253,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add tar gzip ansible
+            yum install -y tar gzip
       - run:
           name: Get backend url
           command: |
