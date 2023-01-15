@@ -249,7 +249,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [ frontend-build ]
-      #- install-nodejs
+      - install-nodejs
       - run:
           name: Install dependencies
           command: |
