@@ -249,11 +249,11 @@ jobs:
       - checkout
       - restore_cache:
           keys: [ frontend-build ]
-   #   - install-nodejs
+      #- install-nodejs
       - run:
           name: Install dependencies
           command: |
-            yum install tar gzip ansible
+            apk add tar gzip ansible
       - run:
           name: Get backend url
           command: |
