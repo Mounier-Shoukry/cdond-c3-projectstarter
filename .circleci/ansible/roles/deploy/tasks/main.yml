@@ -5,7 +5,7 @@
 
 - name: extract backend files
   unarchive:
-    src: "files/artifact.tar.gz"
+    src: "artifact.tar.gz"
     dest: "~/backend-app"
 
 - name: "Installing backend Node Dependencies"
@@ -18,7 +18,6 @@
     cd ~/backend-app/dist
     pm2 stop default
     pm2 start main.js
-
   register: execute_node
 
 - name: print message
