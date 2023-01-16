@@ -333,11 +333,11 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            if curl -s $API_URL/api/status | grep "ok"
+            if curl "${API_URL}/api/status" | grep "ok"
             then
-              echo "ok"
+              return 0
             else
-              echo "not ok"
+              return 1
             fi
       - run:
           name: Frontend smoke test.
