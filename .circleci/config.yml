@@ -401,18 +401,23 @@ jobs:
             name: Get old stack workflow id
             command: |
               mapfile OldWorkflowID < ./.circleci/ansible/OldWorkflowID.txt
-              echo "OldWorkflowID: ${OldWorkflowID}"
               
               export STACKS=($(aws cloudformation list-stacks \
                               --query "StackSummaries[*].StackName" \
                               --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
               
-              echo "removing old stack" 
+              echo Stacks: "${STACKS[@]}"
+              
+              echo "removing old stack" ${OldWorkflowID}
+              
               if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
               then
+                echo '------------------------ Delete Confirmed --------------------------------'
                 aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
                 aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
                 aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+              else
+                echo '------------------------ Can't clean up --------------------------------'
               fi
             
 
