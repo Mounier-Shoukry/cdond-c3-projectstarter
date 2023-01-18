@@ -304,7 +304,7 @@ jobs:
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
-            cp artifact.tar.gz .circleci/ansible/roles/deploy/files
+            cp ./artifact.tar.gz .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
@@ -366,17 +366,21 @@ jobs:
             export OldWorkflowID=$(aws cloudformation \
                list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                --no-paginate --output text)
-            echo $OldWorkflowID >> ~/OldWorkflowID.txt
-            cat ~/OldWorkflowID.txt
+            echo $OldWorkflowID >> ./.circleci/ansible/OldWorkflowID.txt
+            cat ./.circleci/ansible/OldWorkflowID.txt
             
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
-              --stack-name "InitialStack-${OldWorkflowID}" \
+              --stack-name InitialStack \
               --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
             
             echo "OldWorkflowID: ${OldWorkflowID}"
             echo "Current Workflow Id: ${CIRCLE_WORKFLOW_ID:0:7}"
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/OldWorkflowID.txt
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
@@ -387,19 +391,20 @@ jobs:
         - image: amazon/aws-cli
       steps:
         - checkout
+        - attach_workspace:
+            at: ~/
         - run:
             name: Get old stack workflow id
             command: |
               # your code here
-              export OldWorkflowID=$(aws cloudformation \
-                 list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                 --no-paginate --output text)
+              export OldWorkflowID= (cat /.circleci/ansible/OldWorkflowID.txt)
+              echo "OldWorkflowID: ${OldWorkflowID}"
               
               export STACKS=($(aws cloudformation list-stacks \
                               --query "StackSummaries[*].StackName" \
                               --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
               
-              echo "removing old stack"
+              echo "removing old stack" 
               if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
               then
                 aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
