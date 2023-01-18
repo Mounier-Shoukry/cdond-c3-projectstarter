@@ -401,7 +401,7 @@ jobs:
             name: Get old stack workflow id
             command: |
               # your code here
-              export OldWorkflowID= (cat ./.circleci/ansible/OldWorkflowID.txt)
+              export OldWorkflowID= $(cat ./.circleci/ansible/OldWorkflowID.txt)
               echo "OldWorkflowID: ${OldWorkflowID}"
               
               export STACKS=($(aws cloudformation list-stacks \
