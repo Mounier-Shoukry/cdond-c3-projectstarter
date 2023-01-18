@@ -398,7 +398,7 @@ jobs:
         - run:
             name: Get old stack workflow id
             command: |
-              echo '1c9f4ae' >> ./.circleci/ansible/OldWorkflowID.txt
+              echo 'udapeople-1c9f4ae' >> ./.circleci/ansible/OldWorkflowID.txt
               mapfile OldWorkflowID < ./.circleci/ansible/OldWorkflowID.txt
               
               export STACKS=($(aws cloudformation list-stacks \
