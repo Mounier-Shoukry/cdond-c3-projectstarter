@@ -388,13 +388,11 @@ jobs:
 
   cleanup:
       docker:
-        - image: amazon/aws-cli
+        - image: cimg/base:stable
       steps:
         - checkout
-        - run:
-            name: Install tar utility
-            command: |
-              yum install -y tar gzip
+        - install_awscli
+        - install_nodejs
         - attach_workspace:
             at: ~/
         - run:
