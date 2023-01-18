@@ -11,6 +11,7 @@ import * as express from 'express';
 import { ErrorFilter } from './modules/errors/error.filter';
 
 async function bootstrap() {
+  console.log("Trigger build from dev-branch");
   const logger = new AppLogger();
   logger.info(`NodeJs Version ${process.version}`);
   logger.info(JSON.stringify(process.env));
