@@ -364,23 +364,18 @@ jobs:
           name: Update cloudfront distribution
           command: |
             export OldWorkflowID=$(aws cloudformation \
-               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-               --no-paginate --output text)
-            echo $OldWorkflowID >> ./.circleci/ansible/OldWorkflowID.txt
-            cat ./.circleci/ansible/OldWorkflowID.txt
+                      list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                      --no-paginate --output text)
+
+            curl --insecure https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OldWorkflowID}"
             
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
-              --stack-name InitialStack \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-              --tags project=udapeople
+              --stack-name InitialStack
             
             echo "OldWorkflowID: ${OldWorkflowID}"
             echo "Current Workflow Id: ${CIRCLE_WORKFLOW_ID:0:7}"
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/OldWorkflowID.txt
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
@@ -395,12 +390,10 @@ jobs:
           name: Install tar utility
           command: |
             yum install -y tar gzip
-      - attach_workspace:
-          at: ~/
       - run:
           name: Get old stack workflow id
           command: |
-            mapfile OldWorkflowID < ./.circleci/ansible/OldWorkflowID.txt
+            export OldWorkflowID=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/old_workflow_id)
             
             echo "removing old stack" ${OldWorkflowID}
             
