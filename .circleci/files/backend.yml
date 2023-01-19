@@ -39,5 +39,3 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
-        - Key: Name
-          Value: node_exporter
