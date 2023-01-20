@@ -1,1 +1,3 @@
 URL01(GitHUB): https://github.com/Mounier-Shoukry/cdond-c3-projectstarter
+cloudfront: http://d1716qvcmq8oim.cloudfront.net
+frontendURL: http://udapeople-bb804c6.s3-website-us-east-1.amazonaws.com/
